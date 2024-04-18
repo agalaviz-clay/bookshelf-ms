@@ -1,20 +1,23 @@
 # ------------------ 
 # Get Git current branch and Customize prompt
 function git_branch() {
-	git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/[\1]/p'
+	git branch --show-current 2> /dev/null | sed -e 's/.*/[&]/'
 }
 
-COLOR_DEF=$'%f'			#default white
+COLOR_DEF=$'%f'			    #default white
 COLOR_USR=$'%F{010}'		#green
 COLOR_DIR=$'%F{011}'		#yellow
 COLOR_GIT=$'%F{009}'		#red
 COLOR_DOLLA_SIGN=$'%F{014}'	#blue
 
 setopt PROMPT_SUBST
-export PROMPT="${COLOR_USR}%n ${COLOR_DIR}%~ ${COLOR_GIT}$(git_branch)
-${COLOR_DOLLA_SIGN}$ ${COLOR_DEF}"
 
-# ------------------ 
+precmd() {
+PROMPT="${COLOR_USR}%n ${COLOR_DIR}%~ ${COLOR_GIT}$(git_branch)
+${COLOR_DOLLA_SIGN}$ ${COLOR_DEF}"
+}
+
+# ------------------
 
 # Aliases
 alias gs='git status'
@@ -25,3 +28,5 @@ alias ls='ls -GF'
 
 # -G colorizes output
 # -F throws a `/` after a directory, `*` after an executable, and `@` after a symlink
+
+# ------------------
