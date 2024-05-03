@@ -9,6 +9,5 @@ public class BookshelfmsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BookshelfmsApplication.class, args);
-		System.out.println("Hello world");
 	}
 }
