@@ -1,19 +1,30 @@
 package com.mtatgc.bookshelfms.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
-
+@Entity
 public class Book {
-
-    private long id;
+    @Id
+    @NotNull(message = "id is required")
+    private Long id;
+    @NotNull(message = "title is required")
     private String title;
     private String genre;
-    private int authorId;
+    @NotNull(message = "author_id is required")
+    @JsonProperty("author_id")
+    private Integer authorId;
+    @NotNull(message = "published_date is required")
+    @JsonProperty("published_date")
     private LocalDate publishedDate;
 
     // default constructor to be used by SpringBoot for bean creation
     public Book() {}
 
-    public Book(long id, String title, String genre, int authorId, LocalDate publishedDate) {
+    public Book(Long id, String title, String genre, Integer authorId, LocalDate publishedDate) {
         this.id = id;
         this.title = title;
         this.genre = genre;
@@ -21,7 +32,7 @@ public class Book {
         this.publishedDate = publishedDate;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -33,7 +44,7 @@ public class Book {
         return genre;
     }
 
-    public int getAuthorId() {
+    public Integer getAuthorId() {
         return authorId;
     }
 
@@ -41,7 +52,7 @@ public class Book {
         return publishedDate;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,7 +64,7 @@ public class Book {
         this.genre = genre;
     }
 
-    public void setAuthorId(int authorId) {
+    public void setAuthorId(Integer authorId) {
         this.authorId = authorId;
     }
 
