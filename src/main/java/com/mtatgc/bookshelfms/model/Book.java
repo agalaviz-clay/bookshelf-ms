@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import java.time.LocalDate;
+@EnableAutoConfiguration
 @Entity
 public class Book {
     @Id

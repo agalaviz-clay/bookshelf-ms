@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 /**
  * This controller accepts, handles, and responds to HTTP requests from endpoints that deal with books
  */
@@ -15,19 +17,20 @@ public class BookController {
     @Autowired
     BookService bookService;
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping
     public Book createBook(@Valid @RequestBody Book book) {
-        // TODO: book service next,
-        // book
-        System.out.println("Book title name: " + book.getTitle());
+        // TODO validation
+        Book updatedBook = bookService.createBook(book);
+        System.out.println("Book title name: " + updatedBook.getTitle());
         System.out.println("Received data");
-        // book.setTitle("Andres' Revenge");
-        return book;
-        // how to make sure a field is required
+        return updatedBook;
     }
 
-    @GetMapping
-    public String helloWorld() {
-        return "Hello Maidres";
+    @GetMapping("/{id}")
+    public Optional<Book> getBook(@PathVariable Long id) {
+        return bookService.getBook(id);
     }
+
+    // TODO @PutMapping endpoint
+    // TODO @DeleteMapping endpoint
 }
