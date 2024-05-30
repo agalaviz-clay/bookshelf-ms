@@ -32,5 +32,9 @@ public class BookController {
     }
 
     // TODO @PutMapping endpoint
-    // TODO @DeleteMapping endpoint
+
+    @DeleteMapping("/{id}")
+    public void deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
+    }
 }
