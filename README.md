@@ -1,1 +1,1 @@
-# BookcaseMS
+# Bookshelf Management System (MS)
