@@ -5,8 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-
 import java.time.LocalDate;
+
 @EnableAutoConfiguration
 @Entity
 public class Book {
@@ -73,7 +73,4 @@ public class Book {
     public void setPublishedDate(LocalDate publishedDate) {
         this.publishedDate = publishedDate;
     }
-
-
-
 }

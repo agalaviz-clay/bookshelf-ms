@@ -5,7 +5,6 @@ import com.mtatgc.bookshelfms.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
 
 /**
@@ -14,12 +13,16 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/books")
 public class BookController {
+    private final BookService bookService;
+
     @Autowired
-    BookService bookService;
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @PostMapping
     public Book createBook(@Valid @RequestBody Book book) {
-        // TODO validation
+        // TODO: Validation
         Book updatedBook = bookService.createBook(book);
         System.out.println("Book title name: " + updatedBook.getTitle());
         System.out.println("Received data");
@@ -31,7 +34,9 @@ public class BookController {
         return bookService.getBook(id);
     }
 
-    // TODO @PutMapping endpoint
+    // TODO: Create put endpoint
+    // TODO: Create get endpoint for getting a list of books
+    // TODO: Create delete endpoint for deleting all books
 
     @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable Long id) {
