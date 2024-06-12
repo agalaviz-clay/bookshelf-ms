@@ -1,1 +1,7 @@
-spring.application.name: bookshelfms
+spring:
+  application.name: bookshelfms
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/book_shelf"
+    username: postgres
+    password: abc
+  jpa.generate-ddl: true
