@@ -26,6 +26,8 @@ public class BookController {
     // Type used to be Book
     public ResponseEntity<String> createBook(@Valid @RequestBody Book book) {
         // TODO: Validation
+        // TODO: Our system should assign bookID, it should not be provided as information in JSON
+        // TODO: I can currently create a new book with ID 999
         if (bookService.getBook(book.getId()) != null) {
             // book with this ID already exists
             return ResponseEntity.badRequest().body("This ID already exists");
@@ -83,6 +85,23 @@ public class BookController {
 
 
     // TODO: Create get endpoint for getting a list of books
+    @GetMapping("/all")
+    public ResponseEntity<String> getAllBooks() {
+        // also pathing above could just be empty since the other get uses
+        // path of /{id}
+        // or is there a better name for the path?
+        Iterable<Book> listOfBooks = bookService.getAllBooks();
+
+        // for validation what do I want to do if there is no books
+        // in the database is it okay to return empty or null whatever it
+        // returns?
+
+        // do i really want .toString in that format
+        // or something else. like does it do .toString on each iterable
+        // aka each book in the list? or what
+        return ResponseEntity.ok(listOfBooks.toString());
+    }
+
     // TODO: Create delete endpoint for deleting all books
 
     @DeleteMapping("/{id}")
