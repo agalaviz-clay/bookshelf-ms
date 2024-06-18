@@ -23,11 +23,15 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public Optional<Book> getBook(Long id) {
-        return bookRepository.findById(id);
-    }
-
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    public Book getBook(long id) {
+       return bookRepository.findByBookId(id);
+    }
+
+    public Book saveBook(Book book) {
+        return bookRepository.save(book);
     }
 }
