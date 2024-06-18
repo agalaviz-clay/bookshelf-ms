@@ -40,5 +40,4 @@ public class BookService {
     public Iterable<Book> getAllBooks() {
         return bookRepository.findAll();
     }
-
 }
