@@ -1,6 +1,7 @@
 package com.mtatgc.bookshelfms.controller;
 
 import com.mtatgc.bookshelfms.model.Book;
+import com.mtatgc.bookshelfms.repository.BookRepository;
 import com.mtatgc.bookshelfms.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
