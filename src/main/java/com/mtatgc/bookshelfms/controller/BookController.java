@@ -1,6 +1,7 @@
 package com.mtatgc.bookshelfms.controller;
 
 import com.mtatgc.bookshelfms.model.Book;
+import com.mtatgc.bookshelfms.repository.BookRepository;
 import com.mtatgc.bookshelfms.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,8 +84,6 @@ public class BookController {
         return ResponseEntity.ok(originalBook.toString());
     }
 
-
-    // TODO: Create get endpoint for getting a list of books
     @GetMapping("/all")
     public ResponseEntity<String> getAllBooks() {
         // also pathing above could just be empty since the other get uses
@@ -96,16 +95,30 @@ public class BookController {
         // in the database is it okay to return empty or null whatever it
         // returns?
 
-        // do i really want .toString in that format
+        // do I really want .toString in that format
         // or something else. like does it do .toString on each iterable
         // aka each book in the list? or what
         return ResponseEntity.ok(listOfBooks.toString());
     }
 
-    // TODO: Create delete endpoint for deleting all books
-
     @DeleteMapping("/{id}")
-    public void deleteBook(@PathVariable Long id) {
+    public ResponseEntity<String> deleteBook(@PathVariable Long id) {
+        // should I check if id exists before trying to delete
+        // I believe that .deleteBook that calls .deleteById() deletes if its found
+        // and does nothing if it's not found
         bookService.deleteBook(id);
+        // if I do care maybe I can see if id exists that the body is that
+        // it was successfully deleted
+
+        // else if not available just say in the body that the ID did not
+        // exists so it was not deleted I don't think that needs to be a
+        // .badRequest().body("some message")
+        return ResponseEntity.ok("Book is deleted");
+    }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<String> deleteAllBooks() {
+        bookService.deleteAllBooks();
+        return ResponseEntity.ok("Books are deleted");
     }
 }

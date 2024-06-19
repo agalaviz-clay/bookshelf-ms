@@ -28,6 +28,10 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
+    public void deleteAllBooks() {
+        bookRepository.deleteAll();
+    }
+
     public Book getBook(long id) {
        return bookRepository.findByBookId(id);
     }
@@ -39,4 +43,5 @@ public class BookService {
     public Iterable<Book> getAllBooks() {
         return bookRepository.findAll();
     }
+
 }
