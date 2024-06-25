@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+
 import java.time.LocalDate;
 
 @EnableAutoConfiguration
@@ -79,7 +80,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "id: " + this.id + "\n" + "author_id: " + this.authorId + "\n" +"genre: " + this.genre +
-                "\n" + "published_date: " + this.publishedDate + "\n" +"title: " + this.title;
+        return "id: " + this.id + "\n" + "author_id: " + this.authorId + "\n" + "genre: " + this.genre
+               + "\n" + "published_date: " + this.publishedDate + "\n" + "title: " + this.title + "\n";
     }
 }
