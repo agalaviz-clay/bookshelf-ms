@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+
 import java.time.LocalDate;
 
 @EnableAutoConfiguration
@@ -12,12 +14,14 @@ import java.time.LocalDate;
 public class Book {
     @Id
     @NotNull(message = "id is required")
+    @Positive
     private Long id;
     @NotNull(message = "title is required")
     private String title;
     private String genre;
     @NotNull(message = "author_id is required")
     @JsonProperty("author_id")
+    @Positive
     private Integer authorId;
     @NotNull(message = "published_date is required")
     @JsonProperty("published_date")
@@ -72,5 +76,11 @@ public class Book {
 
     public void setPublishedDate(LocalDate publishedDate) {
         this.publishedDate = publishedDate;
+    }
+
+    @Override
+    public String toString() {
+        return "id: " + this.id + "\n" + "author_id: " + this.authorId + "\n" + "genre: " + this.genre
+               + "\n" + "published_date: " + this.publishedDate + "\n" + "title: " + this.title + "\n";
     }
 }

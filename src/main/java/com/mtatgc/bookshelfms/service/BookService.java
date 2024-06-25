@@ -5,8 +5,6 @@ import com.mtatgc.bookshelfms.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 /**
  * BookService is where business logic/functional requirements are implemented.
  */
@@ -23,11 +21,24 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public Optional<Book> getBook(Long id) {
-        return bookRepository.findById(id);
-    }
-
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
     }
+
+    public void deleteAllBooks() {
+        bookRepository.deleteAll();
+    }
+
+    public Book getBook(long id) {
+       return bookRepository.findByBookId(id);
+    }
+
+    public Book saveBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+    public Iterable<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
+
 }
