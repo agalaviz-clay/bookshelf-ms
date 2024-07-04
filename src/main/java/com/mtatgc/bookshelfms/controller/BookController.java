@@ -21,14 +21,6 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @PostMapping
-    public ResponseEntity<String> createBook(@Valid @RequestBody Book book) {
-        if (bookService.getBook(book.getId()) != null) {
-            return ResponseEntity.badRequest().body("This ID already exists");
-        }
-        Book updatedBook = bookService.createBook(book);
-        return ResponseEntity.ok(updatedBook.toString());
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<String> getBook(@PathVariable Long id) {
@@ -37,6 +29,21 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(book.toString());
+    }
+
+    @GetMapping()
+    public ResponseEntity<String> getAllBooks() {
+        Iterable<Book> listOfBooks = bookService.getAllBooks();
+        return ResponseEntity.ok(listOfBooks.toString());
+    }
+
+    @PostMapping
+    public ResponseEntity<String> createBook(@Valid @RequestBody Book book) {
+        if (bookService.getBook(book.getId()) != null) {
+            return ResponseEntity.badRequest().body("This ID already exists");
+        }
+        Book updatedBook = bookService.createBook(book);
+        return ResponseEntity.ok(updatedBook.toString());
     }
 
     @PutMapping("/{id}")
@@ -68,12 +75,6 @@ public class BookController {
 
         bookService.saveBook(originalBook);
         return ResponseEntity.ok(originalBook.toString());
-    }
-
-    @GetMapping()
-    public ResponseEntity<String> getAllBooks() {
-        Iterable<Book> listOfBooks = bookService.getAllBooks();
-        return ResponseEntity.ok(listOfBooks.toString());
     }
 
     @DeleteMapping("/{id}")
