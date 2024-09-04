@@ -2,7 +2,6 @@ package com.mtatgc.bookshelfms.service;
 
 import com.mtatgc.bookshelfms.model.Book;
 import com.mtatgc.bookshelfms.repository.BookRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,10 +10,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTests {
@@ -34,7 +41,7 @@ public class BookServiceTests {
 
         Book respBook = mockBookService.getBook(1L);
 
-        Assertions.assertEquals(book, respBook);
+        assertEquals(book, respBook);
     }
 
     @Test
@@ -44,7 +51,7 @@ public class BookServiceTests {
 
         Book respBook = mockBookService.getBook(1L);
 
-        Assertions.assertNull(respBook);
+        assertNull(respBook);
     }
 
     @Test
@@ -62,19 +69,18 @@ public class BookServiceTests {
 
         Iterable<Book> respList = mockBookService.getAllBooks();
 
-        Assertions.assertEquals(list, respList);
+        assertEquals(list, respList);
     }
 
     @Test
     void no_books_to_get() throws Exception {
-        ArrayList<Book> list = new ArrayList<>();
-
         when(mockBookRepository.findAll())
-            .thenReturn(list);
+            .thenReturn(Collections.emptyList());
 
         Iterable<Book> respList = mockBookService.getAllBooks();
 
-        Assertions.assertEquals(list, respList);
+        assertInstanceOf(Iterable.class, respList);
+        assertFalse(respList.iterator().hasNext());
     }
 
     @Test
@@ -87,7 +93,7 @@ public class BookServiceTests {
 
         Book respBook = mockBookService.createBook(book);
 
-        Assertions.assertEquals(book, respBook);
+        assertEquals(book, respBook);
     }
 
     @Test
@@ -100,7 +106,7 @@ public class BookServiceTests {
 
         Book respBook = mockBookService.saveBook(book);
 
-        Assertions.assertEquals(book, respBook);
+        assertEquals(book, respBook);
     }
 
     @Test
