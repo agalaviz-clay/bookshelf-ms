@@ -1,7 +1,6 @@
 package com.mtatgc.bookshelfms.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mtatgc.bookshelfms.model.Book;
 import com.mtatgc.bookshelfms.service.BookService;
 import org.junit.jupiter.api.Test;
@@ -23,8 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(BookController.class)
 public class BookControllerTests {
@@ -33,6 +31,9 @@ public class BookControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper; // For serializing and deserializing JSON
 
     @Test
     void get_book_by_book_id() throws Exception {
@@ -48,15 +49,11 @@ public class BookControllerTests {
 
         // assert
         resp.andExpect(status().isOk())
-            .andExpect(content()
-                .string(
-                    "id: 1\n" +
-                        "author_id: 123\n" +
-                        "genre: Action\n" +
-                        "published_date: 2020-01-08\n" +
-                        "title: Hunger Games\n"
-                )
-            );
+            .andExpect(content().contentType("application/json"))
+            .andExpect(jsonPath("$.id").value(book.getId()))
+            .andExpect(jsonPath("$.title").value(book.getTitle()))
+            .andExpect(jsonPath("$.genre").value(book.getGenre()))
+            .andExpect(jsonPath("$.author_id").value(book.getAuthorId()));
     }
 
     @Test
@@ -91,21 +88,8 @@ public class BookControllerTests {
 
         // assert
         resp.andExpect(status().isOk())
-            .andExpect(content()
-                .string(
-                    "[id: 1\n" +
-                        "author_id: 123\n" +
-                        "genre: Action\n" +
-                        "published_date: 2020-01-08\n" +
-                        "title: Hunger Games\n" +
-                        ", id: 2\n" +
-                        "author_id: 45\n" +
-                        "genre: Horror\n" +
-                        "published_date: 2021-02-13\n" +
-                        "title: Starving Trials\n" +
-                        "]"
-                )
-            );
+            .andExpect(content().contentType("application/json"))
+            .andExpect(content().json(objectMapper.writeValueAsString(listOfBooks))); // Full JSON check
     }
 
     @Test
@@ -121,7 +105,8 @@ public class BookControllerTests {
 
         // assert
         resp.andExpect(status().isOk())
-            .andExpect(content().string("[]"));
+            .andExpect(content().contentType("application/json"))
+            .andExpect(content().json("[]"));
     }
 
     @Test
@@ -139,22 +124,15 @@ public class BookControllerTests {
         // act
         ResultActions resp = mockMvc.perform(
             post("/books")
-                .content(asJsonString(book))
+                .content(objectMapper.writeValueAsString(book))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         );
 
         // assert
-        resp.andExpect(status().isOk())
-            .andExpect(content()
-                .string(
-                    "id: 99\n" +
-                        "author_id: 3465\n" +
-                        "genre: Numbers\n" +
-                        "published_date: 2024-06-24\n" +
-                        "title: Book99\n"
-                )
-            );
+        resp.andExpect(status().isCreated())
+            .andExpect(content().contentType("application/json"))
+            .andExpect(content().json(objectMapper.writeValueAsString(book)));
     }
 
     @Test
@@ -177,22 +155,18 @@ public class BookControllerTests {
         // act
         ResultActions resp = mockMvc.perform(
             put("/books/1")
-                .content(asJsonString(updates))
+                .content(objectMapper.writeValueAsString(updates))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         );
 
         // assert
         resp.andExpect(status().isOk())
-            .andExpect(content()
-                .string(
-                    "id: 1\n" +
-                        "author_id: 32\n" +
-                        "genre: Mystery\n" +
-                        "published_date: 2024-01-13\n" +
-                        "title: New Name\n"
-                )
-            );
+            .andExpect(content().contentType("application/json"))
+            .andExpect(jsonPath("$.id").value(originalBook.getId()))
+            .andExpect(jsonPath("$.title").value(updates.getTitle()))
+            .andExpect(jsonPath("$.genre").value(updates.getGenre()))
+            .andExpect(jsonPath("$.author_id").value(originalBook.getAuthorId()));
     }
 
     @Test
@@ -206,7 +180,7 @@ public class BookControllerTests {
         // act
         ResultActions resp = mockMvc.perform(
             put("/books/1")
-                .content(asJsonString(updates))
+                .content(objectMapper.writeValueAsString(updates))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         );
@@ -230,7 +204,7 @@ public class BookControllerTests {
         // act
         ResultActions resp = mockMvc.perform(
             put("/books/1")
-                .content(asJsonString(updates))
+                .content(objectMapper.writeValueAsString(updates))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         );
@@ -262,17 +236,5 @@ public class BookControllerTests {
 
         // assert
         resp.andExpect(status().isNoContent());
-    }
-
-    /**
-     * Used to serialize POJO into JSON object for body of PUT and POST endpoints.
-     */
-    public static String asJsonString(final Object obj) {
-        try {
-            ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-            return mapper.writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }
