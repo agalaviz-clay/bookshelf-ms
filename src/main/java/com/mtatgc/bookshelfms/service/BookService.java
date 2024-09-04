@@ -17,7 +17,19 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
+    public Book getBook(long id) {
+        return bookRepository.findByBookId(id);
+    }
+
+    public Iterable<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
+
     public Book createBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+    public Book saveBook(Book book) {
         return bookRepository.save(book);
     }
 
@@ -28,17 +40,4 @@ public class BookService {
     public void deleteAllBooks() {
         bookRepository.deleteAll();
     }
-
-    public Book getBook(long id) {
-       return bookRepository.findByBookId(id);
-    }
-
-    public Book saveBook(Book book) {
-        return bookRepository.save(book);
-    }
-
-    public Iterable<Book> getAllBooks() {
-        return bookRepository.findAll();
-    }
-
 }
