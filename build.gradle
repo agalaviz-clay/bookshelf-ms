@@ -20,10 +20,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.postgresql:postgresql'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Spring Boot 3.x supports Docker Compose: https://spring.io/blog/2023/06/21/docker-compose-support-in-spring-boot-3-1
 	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 }
 
 test {
 	useJUnitPlatform()
+
+	testLogging {
+		outputs.upToDateWhen { false } // Force individual tests to rerun and ignore cached results
+		events "passed", "skipped", "failed", "standardError"//, "standardOut"
+	}
 }
