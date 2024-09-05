@@ -6,7 +6,14 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * This controller accepts, handles, and responds to HTTP requests from endpoints that deal with books
@@ -22,31 +29,31 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> getBook(@PathVariable Long id) {
+    public ResponseEntity<Book> getBook(@PathVariable Long id) {
         Book book = bookService.getBook(id);
         if (book == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(book.toString());
+        return ResponseEntity.ok(book);
     }
 
     @GetMapping()
-    public ResponseEntity<String> getAllBooks() {
+    public ResponseEntity<Iterable<Book>> getAllBooks() {
         Iterable<Book> listOfBooks = bookService.getAllBooks();
-        return ResponseEntity.ok(listOfBooks.toString());
+        return ResponseEntity.ok(listOfBooks);
     }
 
     @PostMapping
-    public ResponseEntity<String> createBook(@Valid @RequestBody Book book) {
+    public ResponseEntity<Object> createBook(@Valid @RequestBody Book book) {
         if (bookService.getBook(book.getId()) != null) {
             return ResponseEntity.badRequest().body("This ID already exists");
         }
         Book updatedBook = bookService.createBook(book);
-        return ResponseEntity.ok(updatedBook.toString());
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedBook);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateBook(@PathVariable Long id, @RequestBody Book book) {
+    public ResponseEntity<Object> updateBook(@PathVariable Long id, @RequestBody Book book) {
         Book originalBook = bookService.getBook(id);
         if (originalBook == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -73,17 +80,17 @@ public class BookController {
         }
 
         bookService.saveBook(originalBook);
-        return ResponseEntity.ok(originalBook.toString());
+        return ResponseEntity.ok(originalBook);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBook(@PathVariable Long id) {
+    public ResponseEntity<Book> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping()
-    public ResponseEntity<String> deleteAllBooks() {
+    public ResponseEntity<Book> deleteAllBooks() {
         bookService.deleteAllBooks();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

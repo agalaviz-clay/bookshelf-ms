@@ -77,10 +77,4 @@ public class Book {
     public void setPublishedDate(LocalDate publishedDate) {
         this.publishedDate = publishedDate;
     }
-
-    @Override
-    public String toString() {
-        return "id: " + this.id + "\n" + "author_id: " + this.authorId + "\n" + "genre: " + this.genre
-               + "\n" + "published_date: " + this.publishedDate + "\n" + "title: " + this.title + "\n";
-    }
 }
