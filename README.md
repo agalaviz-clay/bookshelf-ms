@@ -9,7 +9,7 @@ CRUD (Create, Read, Update, Delete) operations. The data is stored in a Postgres
 3. Stop the app with `Ctrl + C`
 
 *Note: You may need Docker. You can download it [here](https://www.docker.com/products/docker-desktop/). And since Spring Boot 3.x, 
-[Docker Compose is supported](https://spring.io/blog/2023/06/21/docker-compose-support-in-spring-boot-3-1)
+[Docker Compose is natively supported](https://spring.io/blog/2023/06/21/docker-compose-support-in-spring-boot-3-1)
 so running the gradle boot run command will also spin up the necessary Docker container (e.g. Postgres). That removes 
 the need for explicitly executing the docker command `docker-compose up` to spin up containers.*
 
