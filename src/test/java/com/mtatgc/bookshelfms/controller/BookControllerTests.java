@@ -52,10 +52,11 @@ public class BookControllerTests {
         // assert
         resp.andExpect(status().isOk())
             .andExpect(content().contentType("application/json"))
-            .andExpect(jsonPath("$.id").value(book.getId()))
-            .andExpect(jsonPath("$.title").value(book.getTitle()))
-            .andExpect(jsonPath("$.genre").value(book.getGenre()))
-            .andExpect(jsonPath("$.author_id").value(book.getAuthorId()));
+            .andExpect(jsonPath("$.id").value(1))
+            .andExpect(jsonPath("$.title").value("Hunger Games"))
+            .andExpect(jsonPath("$.genre").value("Action"))
+            .andExpect(jsonPath("$.author_id").value(123))
+            .andExpect(jsonPath("$.published_date").value("2020-01-08"));
     }
 
     @Test
@@ -165,10 +166,12 @@ public class BookControllerTests {
         // assert
         resp.andExpect(status().isOk())
             .andExpect(content().contentType("application/json"))
-            .andExpect(jsonPath("$.id").value(originalBook.getId()))
-            .andExpect(jsonPath("$.title").value(updates.getTitle()))
-            .andExpect(jsonPath("$.genre").value(updates.getGenre()))
-            .andExpect(jsonPath("$.author_id").value(originalBook.getAuthorId()));
+            .andExpect(jsonPath("$.id").value(1))
+            .andExpect(jsonPath("$.title").value("New Name")) // Title should've been updated!
+            .andExpect(jsonPath("$.genre").value("Mystery")) // Genre should've been updated!
+            .andExpect(jsonPath("$.author_id").value(32))
+            .andExpect(jsonPath("$.published_date").value("2024-01-13"));
+
     }
 
     @Test
