@@ -3,6 +3,8 @@
 A simple backend API to manage items on a bookshelf. It is built using Java, Spring Boot, and Gradle. The API has simple 
 CRUD (Create, Read, Update, Delete) operations. The data is stored in a Postgres database.
 
+The API spec YAML file is located in the `/spec` directory. It is created with OpenAPI Swagger UI. You can render the YAML file at: https://editor-next.swagger.io/
+
 ### Run the App
 1. Execute the gradle command with the bootRun task: `./gradlew bootRun`
 2. Interact with the API endpoints using [Insomnia](https://insomnia.rest/download) (or [Postman](https://www.postman.com/downloads/), [curl](https://blog.hubspot.com/website/curl-command))
