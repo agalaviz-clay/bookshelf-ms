@@ -30,6 +30,9 @@ paths:
         - books
       summary: Add a new book
       description: Add a new book
+      security:
+        - ApiKeyHeader: []
+        - ApiKeyQuery: []
       requestBody:
         description: Create a new book
         content:
@@ -51,9 +54,18 @@ paths:
         - admin
       summary: Delete all books
       description: Delete all books
+      security:
+        - OAuth2: [admin]
+          ApiKeyHeader: []
+        - OAuth2: [admin]
+          ApiKeyQuery: []
       responses:
         '204':
           description: Successful operation
+        '401':
+          description: Not authenticated
+        '403':
+          description: Access token does not have the required scope
   /books/{bookId}:
     get:
       tags:
@@ -84,6 +96,9 @@ paths:
         - books
       summary: Update an existing book by ID
       description: Update an existing book by ID
+      security:
+        - ApiKeyHeader: []
+        - ApiKeyQuery: []
       parameters:
         - name: bookId
           in: path
@@ -108,6 +123,11 @@ paths:
         - admin
       summary: Delete a book by ID
       description: Delete a book by ID
+      security:
+        - OAuth2: [admin]
+          ApiKeyHeader: []
+        - OAuth2: [admin]
+          ApiKeyQuery: []
       parameters:
         - name: bookId
           in: path
@@ -118,6 +138,10 @@ paths:
       responses:
         '204':
           description: Successful operation
+        '401':
+          description: Not authenticated
+        '403':
+          description: Access token does not have the required scope
 components:
   schemas:
     Book:
@@ -143,3 +167,20 @@ components:
         - title
         - authorId
         - publishedDate
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    ApiKeyQuery:
+      type: apiKey
+      in: query
+      name: api-key
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://example.com/oauth/token
+          scopes:
+            admin: Grants access to admin operations

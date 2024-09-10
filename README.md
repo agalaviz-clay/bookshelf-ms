@@ -3,7 +3,8 @@
 A simple backend API to manage items on a bookshelf. It is built using Java, Spring Boot, and Gradle. The API has simple 
 CRUD (Create, Read, Update, Delete) operations. The data is stored in a Postgres database.
 
-The API spec YAML file is located in the `/spec` directory. It is created with OpenAPI Swagger UI. You can render the YAML file at: https://editor-next.swagger.io/
+The API spec YAML file is located in the `/spec` directory. It is created with OpenAPI Swagger UI. You can import and 
+render the YAML file at: https://editor-next.swagger.io/
 
 ### Run the App
 1. Execute the gradle command with the bootRun task: `./gradlew bootRun`
