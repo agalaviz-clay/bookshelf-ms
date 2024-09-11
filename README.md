@@ -1,19 +1,23 @@
 # Bookshelf Management System (MS)
 
-A simple backend API to manage items on a bookshelf. The API has simple CRUD (Create, Read, Update, Delete) operations. The data is stored in
-a Postgres database.
+A simple backend API to manage items on a bookshelf. It is built using Java, Spring Boot, and Gradle. The API has simple 
+CRUD (Create, Read, Update, Delete) operations. The data is stored in a Postgres database.
+
+The API spec YAML file is located in the `/spec` directory. It is created with OpenAPI Swagger UI. You can import and 
+render the YAML file at: https://editor-next.swagger.io/
 
 ### Run the App
-1. Execute the gradle command: `./gradlew bootRun`
-   1. *Since Spring Boot 3.x, [Docker Compose is supported](https://spring.io/blog/2023/06/21/docker-compose-support-in-spring-boot-3-1)
-      so running this command will also spin up the necessary Docker container (e.g. Postgres)*
+1. Execute the gradle command with the bootRun task: `./gradlew bootRun`
 2. Interact with the API endpoints using [Insomnia](https://insomnia.rest/download) (or [Postman](https://www.postman.com/downloads/), [curl](https://blog.hubspot.com/website/curl-command))
 3. Stop the app with `Ctrl + C`
 
-*Note: You may need Docker. You can download it [here](https://www.docker.com/products/docker-desktop/).*
+*Note: You may need Docker. You can download it [here](https://www.docker.com/products/docker-desktop/). And since Spring Boot 3.x, 
+[Docker Compose is natively supported](https://spring.io/blog/2023/06/21/docker-compose-support-in-spring-boot-3-1)
+so running the gradle boot run command will also spin up the necessary Docker container (e.g. Postgres). That removes 
+the need for explicitly executing the docker command `docker-compose up` to spin up containers.*
 
 ### Build the App
-`./gradlew build`
+* Execute the gradle build command: `./gradlew build`
 
 ### Test the App
-`./gradlew test`
+* Execute the gradle test command: `./gradlew test`

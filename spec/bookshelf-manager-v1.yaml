@@ -1,0 +1,186 @@
+openapi: 3.0.3
+info:
+  title: Bookshelf Manager API
+  version: '1.0.0'
+  description: |-
+    A simple backend Bookshelf Manager API to manage books and items on a bookshelf.
+tags:
+  - name: books
+    description: Access and manage book information
+  - name: admin
+    description: Operations that require a user with admin privileges
+paths:
+  /books:
+    get:
+      tags:
+        - books
+      summary: Find all books
+      description: Returns a list of all existing books
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: No books found
+    post:
+      tags:
+        - books
+      summary: Add a new book
+      description: Add a new book
+      security:
+        - ApiKeyHeader: []
+        - ApiKeyQuery: []
+      requestBody:
+        description: Create a new book
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Invalid book ID supplied
+    delete:
+      tags:
+        - admin
+      summary: Delete all books
+      description: Delete all books
+      security:
+        - OAuth2: [admin]
+          ApiKeyHeader: []
+        - OAuth2: [admin]
+          ApiKeyQuery: []
+      responses:
+        '204':
+          description: Successful operation
+        '401':
+          description: Not authenticated
+        '403':
+          description: Access token does not have the required scope
+  /books/{bookId}:
+    get:
+      tags:
+        - books
+      summary: Find book by ID
+      description: Returns a single book
+      parameters:
+        - name: bookId
+          in: path
+          description: ID of book to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful retrieval of the book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Invalid book ID supplied
+        '404':
+          description: Book not found
+    put:
+      tags:
+        - books
+      summary: Update an existing book by ID
+      description: Update an existing book by ID
+      security:
+        - ApiKeyHeader: []
+        - ApiKeyQuery: []
+      parameters:
+        - name: bookId
+          in: path
+          description: ID of book to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Invalid book ID supplied
+        '404':
+          description: Book not found
+    delete:
+      tags:
+        - admin
+      summary: Delete a book by ID
+      description: Delete a book by ID
+      security:
+        - OAuth2: [admin]
+          ApiKeyHeader: []
+        - OAuth2: [admin]
+          ApiKeyQuery: []
+      parameters:
+        - name: bookId
+          in: path
+          description: ID of book to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Successful operation
+        '401':
+          description: Not authenticated
+        '403':
+          description: Access token does not have the required scope
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12345678
+        title:
+          type: string
+          example: "The Great Gatsby"
+        genre:
+          type: string
+          example: "Fiction"
+        authorId:
+          type: integer
+          example: 91011121
+        publishedDate:
+          type: string
+          example: "1925-04-10"
+      required:
+        - id
+        - title
+        - authorId
+        - publishedDate
+  securitySchemes:
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    ApiKeyQuery:
+      type: apiKey
+      in: query
+      name: api-key
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://example.com/oauth/token
+          scopes:
+            admin: Grants access to admin operations
